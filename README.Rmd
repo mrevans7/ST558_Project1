@@ -1,0 +1,115 @@
+---
+title: "ST558 Homework 1"
+author: Michael Evans
+date: 6/5/2020
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(ggplot2)
+library(readr)
+library(DT)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Iris Data Set
+
+## Introduction
+The **Iris flower data set** or **Fisher’s Iris data set** is a multivariate data set introduced by the British statistician and biologist Ronald Fisher in his 1936 paper *The use of multiple measurements in taxonomic problems* as an example of [linear discriminant analysis](https://en.wikipedia.org/wiki/Linear_discriminant_analysis).
+
+```{r irisdata, echo = F, out.width = "22%"}
+knitr::include_graphics("/Users/michaelevans/Documents/ST558/fisher.jpg")
+```
+
+```{r irisdata.kable, echo = F}
+kable(head(iris, 6), caption = "Preview of Iris Data")
+```
+
+## Numeric Summaries by Species
+Words about what they look at below.
+
+```{r numeric, echo = F}
+#Write function for summary of data with rounding
+summary_round <- function(data, round_number){
+  min <- round(sapply(data, min), round_number)
+  q1 <- round(sapply(data, quantile, probs=c(0.25)), round_number)
+  median <- round(sapply(data, median), round_number)
+  mean <- round(sapply(data, mean), round_number)
+  q3 <- round(sapply(data, quantile,probs=c(0.75)), round_number)
+  max <- round(sapply(data, max), round_number)
+  result <- t(data.frame(min, q1, median, mean, q3, max))
+  result <- data.frame(result)
+  row.names(result) <- c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max")
+  return(result)
+}
+
+species_summary <- function(species){
+  species_data <- iris %>% filter(Species == species) %>% select(-Species)
+  kable(summary_round(species_data, 1), caption = paste("Summary of Species ", `species`))
+}
+
+species_summary("setosa")
+species_summary("versicolor")
+species_summary("virginica")
+```
+
+## Visuals
+
+### Boxplot for Comparison
+Words about what they look at below.
+
+```{r boxplot, echo = F}
+#First Graph
+boxplot.1 <- ggplot(data = iris, aes(x = Species, y = Sepal.Length))
+boxplot.1 + geom_boxplot() +
+  geom_jitter(aes(color = Species)) +
+  labs(title = "Boxplot for Sepal Length")
+
+#Second Graph
+boxplot.2 <- ggplot(data = iris, aes(x = Species, y = Sepal.Width))
+boxplot.2 + geom_boxplot() +
+  geom_jitter(aes(color = Species)) + 
+  labs(title = "Boxplot for Sepal Width")
+```
+
+### Multiple Distributions Present
+Words about what they look at below.
+
+```{r multiple, echo = F}
+#First Graph
+multiple.1 <- ggplot(data = iris, aes(x = Sepal.Length))
+multiple.1 + geom_histogram(aes(y = ..density..), bins = 20) +
+  geom_density(size = 3, color = "red", adjust = 0.4)  +
+  labs(title = "Histogram for Sepal Length")
+
+#Second Graph
+multiple.2 <- ggplot(data = iris, aes(x = Sepal.Length))
+multiple.2 + geom_histogram(aes(y = ..density..), bins = 20) +
+  geom_density(color = "red", size = 2)  +
+  labs(title = "Histogram for Sepal Length")+
+  facet_wrap(. ~ Species)
+```
+
+### Scatterplot
+Words about what they look at below.
+
+```{r scatter, echo = F, message= F}
+#First Graph
+scatter.1 <- ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width))
+scatter.1 + geom_point(aes(color = Species)) +
+  geom_smooth(method = lm, aes(group = Species), color = "green") +
+  labs(title = "Sepal Length vs Sepal Width")
+
+#Second Graph
+scatter.2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width))
+scatter.2 + geom_point(aes(color = Species)) +
+  geom_smooth(method = lm, aes(group = Species), color = "green") +
+  labs(title = "Petal Length vs Petal Width")
+```
+
+
+
+
+
