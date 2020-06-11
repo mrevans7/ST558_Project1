@@ -92,3 +92,37 @@ skater_records <- function(ID){
 #Get Data
 skater_records_data <- skater_records("16")
 ```
+
+```{r visuals.1}
+#Make frachise status a factor
+team_totals_data$activeFranchise <- as.factor(team_totals_data$activeFranchise)
+
+#Sum the number of wins and losses per each unique team
+team_totals <- aggregate(list(team_totals_data$wins, team_totals_data$losses), by = list(team_totals_data$teamId, team_totals_data$activeFranchise, team_totals_data$teamName), sum)
+
+#Rename the columns
+names(team_totals) <- c("teamId", "activeFranchise", "teamName", "wins", "losses")
+
+#Add variable to indictate is wins > losses
+team_totals <- team_totals %>% mutate(win_greater_loss = ifelse(wins > losses, "Yes", "No"))
+
+#Make variable a factor
+team_totals$win_greater_loss <- as.factor(team_totals$win_greater_loss)
+
+#First Graph
+visuals.1 <- ggplot(data = team_totals, aes(x = wins, y = losses))
+visuals.1 + geom_point(aes(color = activeFranchise, shape = win_greater_loss)) +
+  geom_smooth() + 
+  labs(color = "Franchise Status", shape = "Wins Greater than Losses?") + 
+  scale_color_manual(values = c("red", "blue"), labels = c("Inactive", "Active"))
+```
+
+
+
+
+
+
+
+
+
+
