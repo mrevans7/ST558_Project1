@@ -4,7 +4,7 @@ author: Michael Evans
 date: 6/5/2020
 output: 
   rmarkdown::github_document:
-    toc: true
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ library(jsonlite)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#JSON Data
+# JSON Data
 
 ## What is it?
 JSON stands for Javascript Object Notation and is a way of storing data in an organized fashion that is easy to access. Generally regarded as a "lightweight data-interchange format", JSON data is great for both humans and machines, as it is both readable by humans and able to be parsed by machines. It was made popular by Douglas Crawford. This data type is built on collections of name/value pairs and an ordered list of values. 

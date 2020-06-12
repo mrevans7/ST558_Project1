@@ -3,7 +3,7 @@ ST558 Project 1
 Michael Evans
 6/5/2020
 
-\#JSON Data
+# JSON Data
 
 ## What is it?
 
