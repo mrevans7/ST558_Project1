@@ -23,10 +23,22 @@ Michael Evans
         Function](#skater-records-for-franchise-function)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
       - [Contingency Tables](#contingency-tables)
+          - [More Wins/Losses vs. Franchise Status Contingency
+            Table](#more-winslosses-vs.-franchise-status-contingency-table)
+          - [Seasons Played vs. Position Contingency
+            Table](#seasons-played-vs.-position-contingency-table)
+      - [Most Goals in a Game vs. Player Status Contingency
+        Table](#most-goals-in-a-game-vs.-player-status-contingency-table)
       - [Numerical Summaries](#numerical-summaries)
+          - [Summary of Goalie’s Games Played, Losses, Wins, Most Goals
+            Against (One Game), and Most Saves (One
+            Game)](#summary-of-goalies-games-played-losses-wins-most-goals-against-one-game-and-most-saves-one-game)
       - [Plots](#plots)
 
 # JSON Data
+
+In this section of the report, we will discuss JSON data and the
+packages in R that can be used to read it.
 
 ## What is it?
 
@@ -106,15 +118,32 @@ data frame.
 ## References
 
 For more information on JSON data and the packages available in R, check
-out these resources that I consulted to gather the initial information:
-1. <https://www.json.org/json-en.html> 2.
-<https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON>
-3.
-<https://www.infoworld.com/article/3222851/what-is-json-a-better-format-for-data-exchange.html>
-4. <https://www.r-bloggers.com/better-handling-of-json-data-in-r/> 5.
-<https://cran.r-project.org/web/packages/RJSONIO/index.html>
+out these resources that were consulted to gather the initial
+information: 1. [The JSON Website](https://www.json.org/json-en.html)
+
+2.  [“Working with JSON” by
+    Mozilla](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
+
+3.  [“What is JSON? A better format for data exchange” by Jonathan
+    Freeman](https://www.infoworld.com/article/3222851/what-is-json-a-better-format-for-data-exchange.html)
+
+4.  [“Better handling of JSON data in R?” by Rolf
+    Fredheim](https://www.r-bloggers.com/better-handling-of-json-data-in-r/)
+
+5.  [RJSONIO Package
+    Documentation](https://cran.r-project.org/web/packages/RJSONIO/index.html)
+
+6.  [rjson Package
+    Documentation](https://cran.r-project.org/web/packages/rjson/index.html)
+
+7.  [jsonlite Package
+    Documentation](https://cran.r-project.org/web/packages/jsonlite/index.html)
 
 # API Calls
+
+In this section of the report, we will create functions to contact the
+the National Hockey League (NHL) API. Each function will return a data
+frame with the appropriate data. We will create 5 functions in total.
 
 ## Franchise Function
 
@@ -274,24 +303,70 @@ skater_records_data <- skater_records("16")
 
 # Exploratory Data Analysis
 
+In this section of the report, we will explore some the data sets we
+aquired. We will look at contingency tables to see counts of different
+variables, numerical summaries to see the distributions of our data, and
+graphics to further explore trends.
+
 ## Contingency Tables
+
+### More Wins/Losses vs. Franchise Status Contingency Table
+
+In our first contingency table, we will look at the count of a newly
+created variable and the status of a franchise (active/inactive) for the
+`team_totals_data`. To start, we will make the `activeFranchise`
+variable a factor.
 
 ``` r
 #Make frachise status a factor
 team_totals_data$activeFranchise <- as.factor(team_totals_data$activeFranchise)
+```
 
+Next, we will work on creating a new variable, `win_greater_loss` that
+tells whether a franchise has more wins or more losses throughout their
+history. To do this, we will start by summing the wins and losses for
+each time, since they are split between two rows in our initial data
+set. We will use the `aggregate()` function combined with `sum` in order
+to do this.
+
+``` r
 #Sum the number of wins and losses per each unique team
 team_totals <- aggregate(list(team_totals_data$wins, team_totals_data$losses), by = list(team_totals_data$teamId, team_totals_data$activeFranchise, team_totals_data$teamName), sum)
+```
 
+Once this is done, we will rename the columns of this data frame so that
+they match the inital column names.
+
+``` r
 #Rename the columns
 names(team_totals) <- c("teamId", "activeFranchise", "teamName", "wins", "losses")
+```
 
+We will then use the `mutate()` function to create our variable,
+`win_greater_loss` that assigns either `"More Wins"` or `"More Losses`
+based on whether a franchises wins exceeds its losses. We will use the
+`iflese()` function to make this comparison.
+
+``` r
 #Add variable to indictate is wins > losses
 team_totals <- team_totals %>% mutate(win_greater_loss = ifelse(wins > losses, "More Wins", "More Losses"))
+```
 
+Next, we will make our newly created variable a factor by using the
+`as.factor()` function.
+
+``` r
 #Make variable a factor
 team_totals$win_greater_loss <- as.factor(team_totals$win_greater_loss)
+```
 
+We are now ready to create our contingency table. We will use the
+`table()` function to get our initial table and save this output as
+`table.1`. We’ll rename the columns and rows to convey the needed
+information using `colnames()` and `rownames()`. Once renamed, we will
+display the contingency table using `kable()` with the added caption.
+
+``` r
 #Create Contingency Table
 table.1 <- table(team_totals$activeFranchise, team_totals$win_greater_loss)
 
@@ -312,6 +387,25 @@ kable(table.1, caption = "More Wins/Losses vs. Franchise Status")
 
 More Wins/Losses vs. Franchise Status
 
+**Analysis:**
+
+An inital inspection of this contingency table shows that inactive
+franchises have a higher amount of franchises with more losses than wins
+(11 of 13) than active franchises (17 of 34). This could suggest that
+inactive franchises become inactive because they struggle. These
+struggles could lead to a lack of fan support, which means less revenue,
+and thus, an inability to stay active.
+
+### Seasons Played vs. Position Contingency Table
+
+In our second contingency table, we will look at the count of positions
+and the number of seasons a player plays for the `skater_records_data`.
+We will just be using data on the Philadelphia Flyers skaters.
+
+We will use the `table()` function to get our initial table and save
+this output as `table.2`. Then, we will display the contingency table
+using `kable()` with the added caption.
+
 ``` r
 #Create Contingency Table
 table.2 <- table(skater_records_data$positionCode, skater_records_data$seasons)
@@ -328,6 +422,25 @@ kable(table.2, caption = "Seasons Played vs. Position")
 | R | 42 | 26 | 19 |  6 |  5 | 2 | 2 | 3 | 3 |  1 |  4 |  0 |  0 |  0 |
 
 Seasons Played vs. Position
+
+**Analysis:**
+
+An inital inspection of this contingency table suggests that each
+position follows a similar distribution for the number of seasons
+played. Most players play somewhere between 1 to 6 seasons, while much
+fewer play more than 6. Only a handful at each position have played more
+than 10.
+
+## Most Goals in a Game vs. Player Status Contingency Table
+
+In our third contingency table, we will look at the count of most goals
+in a game and the player status (active/inactive) `skater_records_data`.
+We will just be using data on the Philadelphia Flyers skaters.
+
+We will use the `table()` function to get our initial table and save
+this output as `table.3`. We will rename the rows using `rownames()` in
+order to convey whether a player is active or inactive. Then, we will
+display the contingency table using `kable()` with the added caption.
 
 ``` r
 #Create Contingency Table
@@ -347,43 +460,91 @@ kable(table.3, caption = "Most Goals in a Game vs. Player Status")
 
 Most Goals in a Game vs. Player Status
 
+**Analysis:**
+
+An inital inspection of this contingency table suggests that the most
+goals scored in one game is distributed similarly for both active and
+inactive players. The trend follows a similar pattern for both, which is
+an inital amount of players with 0, which we will reference as x. Then,
+\~2x players have 1, \~x players have 2, and \~.5x players have 3. One
+significant difference in this data is that no active players have 4
+goals. However, when you consider this number for inactive players is
+\~.1x, this makes sense, as 10% of the initial number of active players
+would be \~1.
+
 ## Numerical Summaries
+
+### Summary of Goalie’s Games Played, Losses, Wins, Most Goals Against (One Game), and Most Saves (One Game)
+
+To create this summary, we will start with the `goalie_records_data` and
+use the `select()` function to get the columns we want a summary of. We
+will save this as `goalie_records_summary` to preserve the inital data.
 
 ``` r
 goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wins, mostGoalsAgainstOneGame,
                                                          mostSavesOneGame)
+```
 
+Next, we will use `sapply()` to find the statistics we want for each
+column. The `sapply()` function applys a function over all rows of a
+data frame. We will need to do this for each statistic wanted. Save each
+output as its own object, using table.4 through table.9.
+
+``` r
 #Get min, 25th quantile, mean, median, 75th quantile, and max
 table.4 <- sapply(goalie_records_summary, min)
-table.5 <- sapply(goalie_records_summary, quantile, probs = .25, na.rm=TRUE)
-table.6 <- sapply(goalie_records_summary, mean, na.rm=TRUE)
-table.7 <- sapply(goalie_records_summary, median, na.rm=TRUE)
-table.8 <- sapply(goalie_records_summary, quantile, probs = .75, na.rm=TRUE)
-table.9 <- sapply(goalie_records_summary, max, na.rm=TRUE)
+table.5 <- sapply(goalie_records_summary, quantile, probs = .25)
+table.6 <- sapply(goalie_records_summary, mean)
+table.7 <- sapply(goalie_records_summary, median)
+table.8 <- sapply(goalie_records_summary, quantile, probs = .75)
+table.9 <- sapply(goalie_records_summary, max)
+```
 
+We will then use the `rbind()` function to combine each individual table
+into one table. We will save this as `table.10`. Then, we will use the
+`round()` function to display all numerical output without any decimals.
+
+``` r
 #Combine into one table
 table.10 <- rbind(table.4, table.5, table.6, table.7, table.8, table.9)
+table.10 <- round(table.10, digits = 0)
+```
 
+Next, we will rename the rows with `rownames()` to show the statistic
+each row contains. Next, we will rename the columns with `colnames()` to
+show the hockey statistic each column contains.
+
+``` r
 #Rename rows
 rownames(table.10) <- c("Min.", "25th Percentile", "Mean", "Median", "75th Percentile", "Max.")
 
 #Rename Columns
 colnames(table.10) <- c("Games Played", "Losses", "Wins", "Most Goals Against (One Game)", 
                          "Most Saves (One Game)") 
+```
 
+Finally, we will display the summary table using `kable()` with the
+added caption.
+
+``` r
+#Create Kable
 kable(table.10, caption = "Summary for Goalie Statistics")
 ```
 
-|                 | Games Played | Losses |      Wins | Most Goals Against (One Game) | Most Saves (One Game) |
-| --------------- | -----------: | -----: | --------: | ----------------------------: | --------------------: |
-| Min.            |      1.00000 |      0 |   0.00000 |                      2.000000 |              20.00000 |
-| 25th Percentile |     12.25000 |      3 |   4.25000 |                      5.000000 |              34.50000 |
-| Mean            |     89.26471 |     29 |  41.20588 |                      6.235294 |              38.70588 |
-| Median          |     47.50000 |     15 |  21.50000 |                      6.000000 |              39.50000 |
-| 75th Percentile |    110.75000 |     35 |  52.00000 |                      7.000000 |              44.75000 |
-| Max.            |    489.00000 |    172 | 240.00000 |                     11.000000 |              54.00000 |
+|                 | Games Played | Losses | Wins | Most Goals Against (One Game) | Most Saves (One Game) |
+| --------------- | -----------: | -----: | ---: | ----------------------------: | --------------------: |
+| Min.            |            1 |      0 |    0 |                             2 |                    20 |
+| 25th Percentile |           12 |      3 |    4 |                             5 |                    34 |
+| Mean            |           89 |     29 |   41 |                             6 |                    39 |
+| Median          |           48 |     15 |   22 |                             6 |                    40 |
+| 75th Percentile |          111 |     35 |   52 |                             7 |                    45 |
+| Max.            |          489 |    172 |  240 |                            11 |                    54 |
 
 Summary for Goalie Statistics
+
+**Analysis:**
+
+Write analysis here.
 
 ## Plots
 
