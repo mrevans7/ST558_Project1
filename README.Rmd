@@ -109,10 +109,63 @@ team_totals <- team_totals %>% mutate(win_greater_loss = ifelse(wins > losses, "
 #Make variable a factor
 team_totals$win_greater_loss <- as.factor(team_totals$win_greater_loss)
 
-kable(table(team_totals$activeFranchise, team_totals$win_greater_loss), caption = "Test")
+#Create Contingency Table
+table.1 <- table(team_totals$activeFranchise, team_totals$win_greater_loss)
+
+#Rename Columns
+colnames(table.1) <- c("More Losses", "More Wins")
+
+#Rename Rows
+rownames(table.1) <- c("Inactive", "Active")
+
+#Create Kable
+kable(table.1, caption = "More Wins/Losses vs. Franchise Status")
 ```
 
+```{r numerical.2}
+#Create Contingency Table
+table.2 <- table(skater_records_data$positionCode, skater_records_data$seasons)
 
+#Create Kable
+kable(table.2, caption = "Seasons Played vs. Position")
+```
+
+```{r numerical.3}
+#Create Contingency Table
+table.3 <- table(skater_records_data$activePlayer, skater_records_data$mostGoalsOneGame)
+
+#Rename Rows
+rownames(table.3) <- c("Inactive", "Active")
+
+#Create Kable
+kable(table.3, caption = "Most Goals in a Game vs. Player Status")
+```
+
+```{r numerical.4}
+goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wins, mostGoalsAgainstOneGame,
+                                                         mostSavesOneGame)
+
+#Get min, 25th quantile, mean, median, 75th quantile, and max
+table.4 <- sapply(goalie_records_summary, min)
+table.5 <- sapply(goalie_records_summary, quantile, probs = .25, na.rm=TRUE)
+table.6 <- sapply(goalie_records_summary, mean, na.rm=TRUE)
+table.7 <- sapply(goalie_records_summary, median, na.rm=TRUE)
+table.8 <- sapply(goalie_records_summary, quantile, probs = .75, na.rm=TRUE)
+table.9 <- sapply(goalie_records_summary, max, na.rm=TRUE)
+
+#Combine into one table
+table.10 <- rbind(table.4, table.5, table.6, table.7, table.8, table.9)
+
+#Rename rows
+rownames(table.10) <- c("Min.", "25th Percentile", "Mean", "Median", "75th Percentile", "Max.")
+
+#Rename Columns
+colnames(table.10) <- c("Games Played", "Losses", "Wins", "Most Goals Against (One Game)", 
+                         "Most Saves (One Game)") 
+
+kable(table.10, caption = "Summary for Goalie Statistics")
+
+```
 
 ```{r visuals.1}
 #First Visual
@@ -147,7 +200,28 @@ visuals.3 + geom_histogram(aes(fill = win_50, y = ..density..), bins = 20) +
   labs(title = "Bar Plot for Shutouts", x = "Shutouts", y = "Density", fill = "Number of Wins")
 ```
 
+```{r visuals.4, warning = F}
+visuals.4 <- ggplot(data = skater_records_data, aes(x = seasons))
+visuals.4 + geom_histogram(aes(fill = positionCode), bins = 15) +
+  labs(title = "Bar Plot for Seasons Played", x = "Number of Seasons Played", y = "Count", fill = "Position")
+```
 
+```{r visuals.5, warning = F}
+visuals.5 <- ggplot(data = skater_records_data, aes(x = mostGoalsOneGame))
+visuals.5 + geom_histogram(aes(fill = activePlayer), bins = 5, position = "dodge") +
+  labs(title = "Bar Plot for Most Goals in One Game", x = "Most Goals in One Game", y = "Count", 
+       fill = "Player Status") +
+  scale_fill_discrete(labels = c("Inactive", "Active"))
+```
+
+```{r visuals.6, warning = F}
+visuals.6 <- ggplot(data = skater_records_data, aes(x = mostGoalsOneGame))
+visuals.6 + geom_density(aes(fill = activePlayer), color = NA, size = 3, adjust = 5, alpha = .5) +
+  labs(title = "Density Plot for Most Goals in One Game", x = "Most Goals in One Game", y = "Density", 
+       fill = "Player Status") +
+  scale_fill_discrete(labels = c("Inactive", "Active"))+
+  guides(color = FALSE)
+```
 
 
 
