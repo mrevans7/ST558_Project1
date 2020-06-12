@@ -689,7 +689,7 @@ In this histogram, we look at the most goals in one game by Flyers
 skaters and the count of each occurrence. While it is clear that the
 inactive players have higher counts, it seems like the both inactive and
 active players follow similar densities. In the next graph, we will see
-if this is indeed the case
+if this is indeed the case.
 
 ### Density Plot for Most Goals in One Game by Flyers Skaters
 
