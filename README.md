@@ -1,7 +1,7 @@
 ST558 Project 1
 ================
 Michael Evans
-6/5/2020
+6/12/2020
 
   - [JSON Data](#json-data)
       - [What is it?](#what-is-it)
@@ -12,6 +12,15 @@ Michael Evans
       - [My Choice of Package](#my-choice-of-package)
       - [References](#references)
   - [API Calls](#api-calls)
+      - [Franchise Function](#franchise-function)
+      - [Franchise Team Totals
+        Function](#franchise-team-totals-function)
+      - [Season Records for Franchise
+        Function](#season-records-for-franchise-function)
+      - [Goalie Records for Franchise
+        Function](#goalie-records-for-franchise-function)
+      - [Skater Records for Franchise
+        Function](#skater-records-for-franchise-function)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
       - [Contingency Tables](#contingency-tables)
       - [Numerical Summaries](#numerical-summaries)
@@ -107,6 +116,20 @@ out these resources that I consulted to gather the initial information:
 
 # API Calls
 
+## Franchise Function
+
+We will use `function()` to create this function. We will save the URL
+that has the data as `full_url`. Then, we will use the `GET()` function
+with the full URL and save this object as `get`. Next, we will use the
+`content()` function to get the data from this URL. We will want to save
+this data as a text file, so we will add the option `as = "text"`. We
+will save this output as `content`. Next, we will get the data using the
+`fromJSON()` function. We will include the `flatten = T` option to get
+this output as a data frame. This object will be saved as `nhl_data`.
+Finally, we will select `data` from `nhl_data`, as this has the data we
+are looking for. This object will be saved as `data` and returned using
+the `return()` function.
+
 ``` r
 #Franchise Function
 franchise <- function(){
@@ -117,10 +140,21 @@ franchise <- function(){
   data <- nhl_data$data
   return(data)
 }
+```
 
+We will then get the franchise data by calling the function
+`franchise()` and saving the output as the object `franchise_data`.
+
+``` r
 #Get Data
 franchise_data <- franchise()
 ```
+
+## Franchise Team Totals Function
+
+We will follow the same steps as we did for the `franchise()` function,
+except we will change the URL to access data about franchise team
+totals.
 
 ``` r
 #Franchise Team Totals Function
@@ -132,10 +166,24 @@ team_totals <- function(){
   data <- nhl_data$data
   return(data)
 }
+```
 
+We will then get the total stats for each franchise by calling the
+function `team_totals()` and saving the output as the object
+`team_totals_data`.
+
+``` r
 #Get Data
 team_totals_data <- team_totals()
 ```
+
+## Season Records for Franchise Function
+
+We will follow the same steps as we did for the `franchise()` function,
+except this function will take in an ID and return the appropriate data
+set for that ID. Within the function, we will use `paste0()` to combine
+the base URL with the given ID. The base URL will access data on season
+records for different franchises.
 
 ``` r
 #Season Records for Franchise
@@ -148,10 +196,27 @@ season_franchise <- function(ID){
   data <- nhl_data$data
   return(data)
 }
+```
 
+We will then get the season records for a specific franchise by calling
+the function `season_franchise("ID")` and saving the output as the
+object `season_franchise_data`. For this analysis, we will get data for
+the Philadelphia Flyers, so we will use `"16"` as the ID.
+
+``` r
 #Get Data
 season_franchise_data <- season_franchise("16")
 ```
+
+    ## No encoding supplied: defaulting to UTF-8.
+
+## Goalie Records for Franchise Function
+
+We will follow the same steps as we did for the `franchise()` function,
+except this function will take in an ID and return the appropriate data
+set for that ID. Within the function, we will use `paste0()` to combine
+the base URL with the given ID. The base URL will access data on goalie
+records for different franchises.
 
 ``` r
 #Goalie Records for Franchise
@@ -164,10 +229,25 @@ goalie_records <- function(ID){
   data <- nhl_data$data
   return(data)
 }
+```
 
+We will then get the goalie records for a specific franchise by calling
+the function `goalie_records("ID")` and saving the output as the object
+`goalie_records_data`. For this analysis, we will get data for the
+Philadelphia Flyers, so we will use `"16"` as the ID.
+
+``` r
 #Get Data
 goalie_records_data <- goalie_records("16")
 ```
+
+## Skater Records for Franchise Function
+
+We will follow the same steps as we did for the `franchise()` function,
+except this function will take in an ID and return the appropriate data
+set for that ID. Within the function, we will use `paste0()` to combine
+the base URL with the given ID. The base URL will access data on skater
+records for different franchises.
 
 ``` r
 #Skater Records for Franchise
@@ -180,7 +260,14 @@ skater_records <- function(ID){
   data <- nhl_data$data
   return(data)
 }
+```
 
+We will then get the skater records for a specific franchise by calling
+the function `skater_records("ID")` and saving the output as the object
+`skater_records_data`. For this analysis, we will get data for the
+Philadelphia Flyers, so we will use `"16"` as the ID.
+
+``` r
 #Get Data
 skater_records_data <- skater_records("16")
 ```
