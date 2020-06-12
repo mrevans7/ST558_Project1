@@ -120,19 +120,21 @@ after the data is read in. We will combine this package with the `httr`
 package to get JSON data.
 
 To read JSON data, we will first use the `GET()` function from `httr` to
-get the whatever information is present from the URL provided. Then, we
-will use the `content()` function from `httr` to retrieve the content of
-the URL as a text file (use the option `as = "text` to do this).
-Finally, we will use the `fromJSON()` function from `jsonlite` to
-convert the JSON data to an R object. We will use the `flatten = T`
-option to automatically flatten the nested data frame into a non-nested
-data frame.
+get whatever information is present from the URL provided. Then, we will
+use the `content()` function from `httr` to retrieve the content of the
+URL as a text file (use the option `as = "text` to do this). Finally, we
+will use the `fromJSON()` function from `jsonlite` to convert the JSON
+data to an R object. We will use the `flatten = T` option to
+automatically flatten the nested data frame into a non-nested data
+frame.
 
 ## References
 
 For more information on JSON data and the packages available in R, check
 out these resources that were consulted to gather the initial
-information: 1. [The JSON Website](https://www.json.org/json-en.html)
+information:
+
+1.  [The JSON Website](https://www.json.org/json-en.html)
 
 2.  [“Working with JSON” by
     Mozilla](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
@@ -250,8 +252,6 @@ the Philadelphia Flyers, so we will use `"16"` as the ID.
 season_franchise_data <- season_franchise("16")
 ```
 
-    ## No encoding supplied: defaulting to UTF-8.
-
 ## Goalie Records for Franchise Function
 
 We will follow the same steps as we did for the `franchise()` function,
@@ -338,13 +338,14 @@ team_totals_data$activeFranchise <- as.factor(team_totals_data$activeFranchise)
 Next, we will work on creating a new variable, `win_greater_loss` that
 tells whether a franchise has more wins or more losses throughout their
 history. To do this, we will start by summing the wins and losses for
-each time, since they are split between two rows in our initial data
+each team, since they are split between two rows in our initial data
 set. We will use the `aggregate()` function combined with `sum` in order
 to do this.
 
 ``` r
 #Sum the number of wins and losses per each unique team
-team_totals <- aggregate(list(team_totals_data$wins, team_totals_data$losses), by = list(team_totals_data$teamId, team_totals_data$activeFranchise, team_totals_data$teamName), sum)
+team_totals <- aggregate(list(team_totals_data$wins, team_totals_data$losses), 
+                         by = list(team_totals_data$teamId, team_totals_data$activeFranchise, team_totals_data$teamName), sum)
 ```
 
 Once this is done, we will rename the columns of this data frame so that
@@ -447,8 +448,9 @@ than 10.
 ## Most Goals in a Game vs. Player Status Contingency Table
 
 In our third contingency table, we will look at the count of most goals
-in a game and the player status (active/inactive) `skater_records_data`.
-We will just be using data on the Philadelphia Flyers skaters.
+in a game and the player status (active/inactive) in
+`skater_records_data`. We will just be using data on the Philadelphia
+Flyers skaters.
 
 We will use the `table()` function to get our initial table and save
 this output as `table.3`. We will rename the rows using `rownames()` in
@@ -501,7 +503,7 @@ goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wi
 Next, we will use `sapply()` to find the statistics we want for each
 column. The `sapply()` function applies a function over all rows of a
 data frame. We will need to do this for each statistic wanted. Save each
-output as its own object, using table.4 through table.9.
+output as its own object, using `table.4` through `table.9`.
 
 ``` r
 #Get min, 25th quantile, mean, median, 75th quantile, and max
@@ -561,13 +563,13 @@ The summary table above doesn’t show us anything that we didn’t expect
 to see. Rather, it gives us an idea of the distribution of each hockey
 statistic. For someone unfamiliar with hockey, this could help put into
 perspective how players fare. For example, knowing that the average
-Flyers goalie has a mean games played of NA suggests that the average
+Flyers goalie has a mean games played of 89 suggests that the average
 Flyers goalie does not have a very long career, as the average NHL
 season has 82 games.
 
 ## Plots
 
-For all of the visuals created below, the 1`ggplot2` package will be
+For all of the visuals created below, the `ggplot2` package will be
 utilized. The code used to produce each graph is shown prior to the
 analysis below each graph.
 
@@ -582,8 +584,6 @@ visuals.1 + geom_point(aes(color = activeFranchise, shape = win_greater_loss)) +
        x = "Wins", y = "Losses") + 
   scale_color_manual(values = c("red", "blue"), labels = c("Inactive", "Active"))
 ```
-
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
 ![](README_files/figure-gfm/visuals.1-1.png)<!-- -->
 
@@ -621,8 +621,8 @@ significantly more inactive players than there are active players.
 Because of that, it’s likely that over time, active players and their
 goals scored will regress to be closer to the inactive amount. It could
 be that at the moment the Flyers have a lot of players on their roster
-with a lot of career goals, which is driving up the average since the
-population size is smaller.
+with a lot of career goals, which is driving up the average with a
+smaller population size.
 
 ### Density Histogram for Shutouts by Flyers Goalies
 
@@ -650,7 +650,8 @@ observation is that almost all of the goals with more than 5 shutouts
 have more than 50 career wins. This shows that goalies that are highly
 skilled, and thus, win more games, generally also have more shutouts.
 This could also occur because goalies that win more games stay around
-for longer duration, which provides more opportunities to get shutouts.
+for a longer duration, which provides more opportunities to get
+shutouts.
 
 ### Histogram for Seasons Played by Flyers Skaters
 
@@ -688,7 +689,7 @@ In this histogram, we look at the most goals in one game by Flyers
 skaters and the count of each occurrence. While it is clear that the
 inactive players have higher counts, it seems like the both inactive and
 active players follow similar densities. In the next graph, we will see
-if this is indeed the game.
+if this is indeed the case
 
 ### Density Plot for Most Goals in One Game by Flyers Skaters
 
