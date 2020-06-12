@@ -3,6 +3,20 @@ ST558 Project 1
 Michael Evans
 6/5/2020
 
+  - [JSON Data](#json-data)
+      - [What is it?](#what-is-it)
+      - [Where does it get used?](#where-does-it-get-used)
+      - [Why is it a good way to store
+        data?](#why-is-it-a-good-way-to-store-data)
+      - [Packages Available](#packages-available)
+      - [My Choice of Package](#my-choice-of-package)
+      - [References](#references)
+  - [API Calls](#api-calls)
+  - [Exploratory Data Analysis](#exploratory-data-analysis)
+      - [Contingency Tables](#contingency-tables)
+      - [Numerical Summaries](#numerical-summaries)
+      - [Plots](#plots)
+
 # JSON Data
 
 ## What is it?
@@ -244,8 +258,7 @@ kable(table.3, caption = "Most Goals in a Game vs. Player Status")
 | Inactive | 121 | 222 | 119 | 46 | 9 |
 | Active   |  13 |  22 |  16 |  7 | 0 |
 
-Most Goals in a Game vs. Player
-Status
+Most Goals in a Game vs. Player Status
 
 ## Numerical Summaries
 
