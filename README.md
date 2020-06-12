@@ -34,6 +34,19 @@ Michael Evans
             Against (One Game), and Most Saves (One
             Game)](#summary-of-goalies-games-played-losses-wins-most-goals-against-one-game-and-most-saves-one-game)
       - [Plots](#plots)
+          - [Scatter Plot of Losses
+            vs. Wins](#scatter-plot-of-losses-vs.-wins)
+          - [Box Plot for Goals Scored by Flyers
+            Skaters](#box-plot-for-goals-scored-by-flyers-skaters)
+          - [Density Histogram for Shutouts by Flyers
+            Goalies](#density-histogram-for-shutouts-by-flyers-goalies)
+          - [Histogram for Seasons Played by Flyers
+            Skaters](#histogram-for-seasons-played-by-flyers-skaters)
+          - [Histogram for Most Goals in One Game by Flyers
+            Skaters](#histogram-for-most-goals-in-one-game-by-flyers-skaters)
+          - [Density Plot for Most Goals in One Game by Flyers
+            Skaters](#density-plot-for-most-goals-in-one-game-by-flyers-skaters)
+  - [Conclusion](#conclusion)
 
 # JSON Data
 
@@ -42,54 +55,54 @@ packages in R that can be used to read it.
 
 ## What is it?
 
-JSON stands for Javascript Object Notation and is a way of storing data
-in an organized fashion that is easy to access. Generally regarded as a
-“lightweight data-interchange format”, JSON data is great for both
-humans and machines, as it is both readable by humans and able to be
-parsed by machines. It was made popular by Douglas Crawford. This data
-type is built on collections of name/value pairs and an ordered list of
-values.
+JSON stands for **Javascript Object Notation** and is a way of storing
+data in an organized fashion that is easy to access. Generally regarded
+as a **“lightweight data-interchange format”**, JSON data is great for
+both humans and machines, as it is both readable by humans and able to
+be parsed by machines. It was made popular by Douglas Crawford. This
+data type is built on collections of **name/value pairs** and an
+**ordered list of values**.
 
 ## Where does it get used?
 
 Since the two data types JSON data is built on are generally universal
-data structures, JSON data is considered language-independent. Because
-of this, many of the programming languages used today have ways of
-reading JSON data. JSON data is essentially just a text file, which
+data structures, JSON data is considered **language-independent**.
+Because of this, many of the programming languages used today have ways
+of reading JSON data. JSON data is essentially just a text file, which
 makes it easy to send over servers. This feature has allowed it to be
-used frequently for transmitting information over the web.
+used frequently for **transmitting information over the web**.
 
 ## Why is it a good way to store data?
 
 Some of the previous features mentioned are the same reasons as to why
 JSON data is a good way of storing data. For starters, the “lightweight”
-feature of the data makes it extremely accessible. JSON data can be
+feature of the data makes it **extremely accessible**. JSON data can be
 loaded quickly because of how “lightweight” it is, which has made it a
-great way to store data on the internet. It can be called and loaded
-quickly.
+great way to store data on the internet. It can be **called and loaded
+quickly**.
 
 Another reason that it is a good way of storing data is because it is
-easily compatible with so many modern programming languages. This means
-that many people working across different programs can still have easy
-access to the same datasets.
+**easily compatible with so many modern programming languages**. This
+means that many people working across different programs can still have
+easy access to the same datasets.
 
 That being said, there are also some limitations of JSON data. There is
 no way to add comments to JSON data. While JSON data is often readable,
-it can be difficult to understand the context of certain things without
-comments. This means that you often need to consult additional
+it can be **difficult to understand the context of certain things
+without comments**. This means that you often need to consult additional
 documentation to understand the data. Additionally, the language has no
-schema, which means that you could accidentally create data that you are
-not intending to create. On the other hand, the lack of schema is
+schema, which means that you could **accidentally create data that you
+are not intending to create**. On the other hand, the lack of schema is
 something that a lot of people like about JSON data, as it offers more
 flexibility.
 
 ## Packages Available
 
-There are three major packages available in R for reading JSON data.
+There are **three major packages** available in R for reading JSON data.
 These include `jsonlite`, `RJSONIO`, and `rjson`. `jsonlite` is the
 newest package of the three and was developed based off of the `RJSONIO`
 package. While all of these packages are able to read JSON data,
-`jsonlite` offers the ability to return a data frame. Typically,
+`jsonlite` offers the **ability to return a data frame**. Typically,
 `RJSONIO` and `rjson` return a list.
 
 `RJSONIO` was built as an alternative to the `rjson` package to offer a
@@ -108,7 +121,7 @@ package to get JSON data.
 
 To read JSON data, we will first use the `GET()` function from `httr` to
 get the whatever information is present from the URL provided. Then, we
-will use the `content()` function from `httr` to retreive the content of
+will use the `content()` function from `httr` to retrieve the content of
 the URL as a text file (use the option `as = "text` to do this).
 Finally, we will use the `fromJSON()` function from `jsonlite` to
 convert the JSON data to an R object. We will use the `flatten = T`
@@ -304,7 +317,7 @@ skater_records_data <- skater_records("16")
 # Exploratory Data Analysis
 
 In this section of the report, we will explore some the data sets we
-aquired. We will look at contingency tables to see counts of different
+acquired. We will look at contingency tables to see counts of different
 variables, numerical summaries to see the distributions of our data, and
 graphics to further explore trends.
 
@@ -335,7 +348,7 @@ team_totals <- aggregate(list(team_totals_data$wins, team_totals_data$losses), b
 ```
 
 Once this is done, we will rename the columns of this data frame so that
-they match the inital column names.
+they match the initial column names.
 
 ``` r
 #Rename the columns
@@ -389,7 +402,7 @@ More Wins/Losses vs. Franchise Status
 
 **Analysis:**
 
-An inital inspection of this contingency table shows that inactive
+An initial inspection of this contingency table shows that inactive
 franchises have a higher amount of franchises with more losses than wins
 (11 of 13) than active franchises (17 of 34). This could suggest that
 inactive franchises become inactive because they struggle. These
@@ -425,7 +438,7 @@ Seasons Played vs. Position
 
 **Analysis:**
 
-An inital inspection of this contingency table suggests that each
+An initial inspection of this contingency table suggests that each
 position follows a similar distribution for the number of seasons
 played. Most players play somewhere between 1 to 6 seasons, while much
 fewer play more than 6. Only a handful at each position have played more
@@ -462,10 +475,10 @@ Most Goals in a Game vs. Player Status
 
 **Analysis:**
 
-An inital inspection of this contingency table suggests that the most
+An initial inspection of this contingency table suggests that the most
 goals scored in one game is distributed similarly for both active and
 inactive players. The trend follows a similar pattern for both, which is
-an inital amount of players with 0, which we will reference as x. Then,
+an initial amount of players with 0, which we will reference as x. Then,
 \~2x players have 1, \~x players have 2, and \~.5x players have 3. One
 significant difference in this data is that no active players have 4
 goals. However, when you consider this number for inactive players is
@@ -478,7 +491,7 @@ would be \~1.
 
 To create this summary, we will start with the `goalie_records_data` and
 use the `select()` function to get the columns we want a summary of. We
-will save this as `goalie_records_summary` to preserve the inital data.
+will save this as `goalie_records_summary` to preserve the initial data.
 
 ``` r
 goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wins, mostGoalsAgainstOneGame,
@@ -486,7 +499,7 @@ goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wi
 ```
 
 Next, we will use `sapply()` to find the statistics we want for each
-column. The `sapply()` function applys a function over all rows of a
+column. The `sapply()` function applies a function over all rows of a
 data frame. We will need to do this for each statistic wanted. Save each
 output as its own object, using table.4 through table.9.
 
@@ -544,16 +557,29 @@ Summary for Goalie Statistics
 
 **Analysis:**
 
-Write analysis here.
+The summary table above doesn’t show us anything that we didn’t expect
+to see. Rather, it gives us an idea of the distribution of each hockey
+statistic. For someone unfamiliar with hockey, this could help put into
+perspective how players fare. For example, knowing that the average
+Flyers goalie has a mean games played of NA suggests that the average
+Flyers goalie does not have a very long career, as the average NHL
+season has 82 games.
 
 ## Plots
+
+For all of the visuals created below, the 1`ggplot2` package will be
+utilized. The code used to produce each graph is shown prior to the
+analysis below each graph.
+
+### Scatter Plot of Losses vs. Wins
 
 ``` r
 #First Visual
 visuals.1 <- ggplot(data = team_totals, aes(x = wins, y = losses))
 visuals.1 + geom_point(aes(color = activeFranchise, shape = win_greater_loss)) +
   geom_smooth() + 
-  labs(color = "Franchise Status", shape = "More Wins or Losses?") + 
+  labs(color = "Franchise Status", shape = "More Wins or Losses?", title = "Total Franchise Losses vs. Wins",
+       x = "Wins", y = "Losses") + 
   scale_color_manual(values = c("red", "blue"), labels = c("Inactive", "Active"))
 ```
 
@@ -561,18 +587,44 @@ visuals.1 + geom_point(aes(color = activeFranchise, shape = win_greater_loss)) +
 
 ![](README_files/figure-gfm/visuals.1-1.png)<!-- -->
 
+**Analysis:**
+
+This plot suggests that the teams in the league with the most wins not
+only have the most wins, but also have more wins than losses. This
+suggests that the teams that win the most do so consistently. At the
+bottom of the graph, there are a lot of teams marked inactive. This
+suggests that the inactive teams were not around for long before they
+became inactive. The regression line in the plot also confirms the
+original observation. Its flattening out at the top shows that those
+teams have more wins than losses.
+
+### Box Plot for Goals Scored by Flyers Skaters
+
 ``` r
 #Second Visual
 visuals.2 <- ggplot(data = skater_records_data, aes(x = activePlayer, y = goals))
 visuals.2 + geom_boxplot(aes(color = activePlayer)) +
   geom_jitter(aes(color = activePlayer), alpha = .2) +
   ylim(0, 75) +
-  labs(title = "Boxplot for Goals Scored", color = "Player Status", x = "Player Status", y = "Goals") +
+  labs(title = "Box Plot for Goals Scored", color = "Player Status", x = "Player Status", y = "Goals") +
   scale_x_discrete(labels = c("Inactive", "Active")) +
   scale_color_discrete(labels = c("Inactive", "Active"))
 ```
 
 ![](README_files/figure-gfm/visuals.2-1.png)<!-- -->
+
+**Analysis:**
+
+This box plot shows that on average, active players are scoring more
+goals than inactive players. The plot also shows that there are
+significantly more inactive players than there are active players.
+Because of that, it’s likely that over time, active players and their
+goals scored will regress to be closer to the inactive amount. It could
+be that at the moment the Flyers have a lot of players on their roster
+with a lot of career goals, which is driving up the average since the
+population size is smaller.
+
+### Density Histogram for Shutouts by Flyers Goalies
 
 ``` r
 #Add variable to indictate if wins > 50
@@ -584,28 +636,61 @@ goalie_records_data$win_50 <- as.factor(goalie_records_data$win_50)
 visuals.3 <- ggplot(data = goalie_records_data, aes(x = shutouts))
 visuals.3 + geom_histogram(aes(fill = win_50, y = ..density..), bins = 20) +
   geom_density() +
-  labs(title = "Bar Plot for Shutouts", x = "Shutouts", y = "Density", fill = "Number of Wins")
+  labs(title = "Density Bar Plot for Shutouts", x = "Shutouts", y = "Density", fill = "Number of Wins")
 ```
 
 ![](README_files/figure-gfm/visuals.3-1.png)<!-- -->
 
+**Analysis:**
+
+In this density plot, we can see the distribution of shutouts, which is
+highly concentrated at lower amounts of shutouts. This makes sense, as a
+shutout is a skilled accomplishment in hockey. Another interesting
+observation is that almost all of the goals with more than 5 shutouts
+have more than 50 career wins. This shows that goalies that are highly
+skilled, and thus, win more games, generally also have more shutouts.
+This could also occur because goalies that win more games stay around
+for longer duration, which provides more opportunities to get shutouts.
+
+### Histogram for Seasons Played by Flyers Skaters
+
 ``` r
 visuals.4 <- ggplot(data = skater_records_data, aes(x = seasons))
 visuals.4 + geom_histogram(aes(fill = positionCode), bins = 15) +
-  labs(title = "Bar Plot for Seasons Played", x = "Number of Seasons Played", y = "Count", fill = "Position")
+  labs(title = "Histogram Plot for Seasons Played", x = "Number of Seasons Played", y = "Count", fill = "Position")
 ```
 
 ![](README_files/figure-gfm/visuals.4-1.png)<!-- -->
 
+**Analysis:**
+
+In this histogram, we look at the number of seasons played broken down
+by position. This is the visual representation of the contingency table
+we looked at earlier in the analysis. This graph confirms the
+observation from that table, being that it appears the number of seasons
+played follow a similar distribution at all positions.
+
+### Histogram for Most Goals in One Game by Flyers Skaters
+
 ``` r
 visuals.5 <- ggplot(data = skater_records_data, aes(x = mostGoalsOneGame))
 visuals.5 + geom_histogram(aes(fill = activePlayer), bins = 5, position = "dodge") +
-  labs(title = "Bar Plot for Most Goals in One Game", x = "Most Goals in One Game", y = "Count", 
+  labs(title = "Histogram for Most Goals in One Game", x = "Most Goals in One Game", y = "Count", 
        fill = "Player Status") +
   scale_fill_discrete(labels = c("Inactive", "Active"))
 ```
 
 ![](README_files/figure-gfm/visuals.5-1.png)<!-- -->
+
+**Analysis:**
+
+In this histogram, we look at the most goals in one game by Flyers
+skaters and the count of each occurrence. While it is clear that the
+inactive players have higher counts, it seems like the both inactive and
+active players follow similar densities. In the next graph, we will see
+if this is indeed the game.
+
+### Density Plot for Most Goals in One Game by Flyers Skaters
 
 ``` r
 visuals.6 <- ggplot(data = skater_records_data, aes(x = mostGoalsOneGame))
@@ -617,3 +702,21 @@ visuals.6 + geom_density(aes(fill = activePlayer), color = NA, size = 3, adjust 
 ```
 
 ![](README_files/figure-gfm/visuals.6-1.png)<!-- -->
+
+**Analysis:**
+
+This is the density plot of the histogram shown in the plot above. This
+confirms the initial observation, which is that both inactive and active
+players follow a similar distribution for most goals in one game. While
+inactive players are a little higher for one goal and two goals, the
+density curves are relatively similar.
+
+# Conclusion
+
+In this analysis, we’ve explored JSON data through the NHL API. We’ve
+written functions to access this data and get data for a specific team.
+We’ve then explored that data through contingency tables, numerical
+summaries, and visualizations. While no significant conclusions have
+been drawn about the data, this process has explored a number of basic
+exploratory data analysis functions that could be applied to higher
+level analysis in the future.
