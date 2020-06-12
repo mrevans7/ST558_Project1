@@ -3,6 +3,94 @@ ST558 Project 1
 Michael Evans
 6/5/2020
 
+\#JSON Data
+
+## What is it?
+
+JSON stands for Javascript Object Notation and is a way of storing data
+in an organized fashion that is easy to access. Generally regarded as a
+“lightweight data-interchange format”, JSON data is great for both
+humans and machines, as it is both readable by humans and able to be
+parsed by machines. It was made popular by Douglas Crawford. This data
+type is built on collections of name/value pairs and an ordered list of
+values.
+
+## Where does it get used?
+
+Since the two data types JSON data is built on are generally universal
+data structures, JSON data is considered language-independent. Because
+of this, many of the programming languages used today have ways of
+reading JSON data. JSON data is essentially just a text file, which
+makes it easy to send over servers. This feature has allowed it to be
+used frequently for transmitting information over the web.
+
+## Why is it a good way to store data?
+
+Some of the previous features mentioned are the same reasons as to why
+JSON data is a good way of storing data. For starters, the “lightweight”
+feature of the data makes it extremely accessible. JSON data can be
+loaded quickly because of how “lightweight” it is, which has made it a
+great way to store data on the internet. It can be called and loaded
+quickly.
+
+Another reason that it is a good way of storing data is because it is
+easily compatible with so many modern programming languages. This means
+that many people working across different programs can still have easy
+access to the same datasets.
+
+That being said, there are also some limitations of JSON data. There is
+no way to add comments to JSON data. While JSON data is often readable,
+it can be difficult to understand the context of certain things without
+comments. This means that you often need to consult additional
+documentation to understand the data. Additionally, the language has no
+schema, which means that you could accidentally create data that you are
+not intending to create. On the other hand, the lack of schema is
+something that a lot of people like about JSON data, as it offers more
+flexibility.
+
+## Packages Available
+
+There are three major packages available in R for reading JSON data.
+These include `jsonlite`, `RJSONIO`, and `rjson`. `jsonlite` is the
+newest package of the three and was developed based off of the `RJSONIO`
+package. While all of these packages are able to read JSON data,
+`jsonlite` offers the ability to return a data frame. Typically,
+`RJSONIO` and `rjson` return a list.
+
+`RJSONIO` was built as an alternative to the `rjson` package to offer a
+faster way to convert JSON data in R. Through updates, the `rjson`
+package is not just as fast, if not faster, than the `RJSONIO` package.
+The `RJSONIO` package also offers some additional options for
+customizing the JSON data that is being read into the program.
+
+## My Choice of Package
+
+For this project, I am choosing to use the `jsonlite` package, as I like
+that it returns a data frame. The data frame is one of the most usable
+objects in R and will be helpful for doing exploratory data analysis
+after the data is read in. We will combine this package with the `httr`
+package to get JSON data.
+
+To read JSON data, we will first use the `GET()` function from `httr` to
+get the whatever information is present from the URL provided. Then, we
+will use the `content()` function from `httr` to retreive the content of
+the URL as a text file (use the option `as = "text` to do this).
+Finally, we will use the `fromJSON()` function from `jsonlite` to
+convert the JSON data to an R object. We will use the `flatten = T`
+option to automatically flatten the nested data frame into a non-nested
+data frame.
+
+## References
+
+For more information on JSON data and the packages available in R, check
+out these resources that I consulted to gather the initial information:
+1. <https://www.json.org/json-en.html> 2.
+<https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON>
+3.
+<https://www.infoworld.com/article/3222851/what-is-json-a-better-format-for-data-exchange.html>
+4. <https://www.r-bloggers.com/better-handling-of-json-data-in-r/> 5.
+<https://cran.r-project.org/web/packages/RJSONIO/index.html>
+
 # API Calls
 
 ``` r
@@ -20,8 +108,6 @@ franchise <- function(){
 franchise_data <- franchise()
 ```
 
-    ## No encoding supplied: defaulting to UTF-8.
-
 ``` r
 #Franchise Team Totals Function
 team_totals <- function(){
@@ -36,8 +122,6 @@ team_totals <- function(){
 #Get Data
 team_totals_data <- team_totals()
 ```
-
-    ## No encoding supplied: defaulting to UTF-8.
 
 ``` r
 #Season Records for Franchise
@@ -55,8 +139,6 @@ season_franchise <- function(ID){
 season_franchise_data <- season_franchise("16")
 ```
 
-    ## No encoding supplied: defaulting to UTF-8.
-
 ``` r
 #Goalie Records for Franchise
 goalie_records <- function(ID){
@@ -72,8 +154,6 @@ goalie_records <- function(ID){
 #Get Data
 goalie_records_data <- goalie_records("16")
 ```
-
-    ## No encoding supplied: defaulting to UTF-8.
 
 ``` r
 #Skater Records for Franchise
@@ -91,7 +171,9 @@ skater_records <- function(ID){
 skater_records_data <- skater_records("16")
 ```
 
-    ## No encoding supplied: defaulting to UTF-8.
+# Exploratory Data Analysis
+
+## Contingency Tables
 
 ``` r
 #Make frachise status a factor
@@ -165,6 +247,8 @@ kable(table.3, caption = "Most Goals in a Game vs. Player Status")
 Most Goals in a Game vs. Player
 Status
 
+## Numerical Summaries
+
 ``` r
 goalie_records_summary <- goalie_records_data %>% select(gamesPlayed, losses, wins, mostGoalsAgainstOneGame,
                                                          mostSavesOneGame)
@@ -200,6 +284,8 @@ kable(table.10, caption = "Summary for Goalie Statistics")
 | Max.            |    489.00000 |    172 | 240.00000 |                     11.000000 |              54.00000 |
 
 Summary for Goalie Statistics
+
+## Plots
 
 ``` r
 #First Visual
